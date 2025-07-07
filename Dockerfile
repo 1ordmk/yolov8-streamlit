@@ -16,4 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8501
 
+ENV STREAMLIT_HOME=/app/.streamlit
+RUN mkdir -p $STREAMLIT_HOME
+ENV STREAMLIT_CONFIG_DIR=$STREAMLIT_HOME
+
 CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
