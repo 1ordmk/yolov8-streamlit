@@ -14,13 +14,20 @@ COPY weights/best(trainedOnM6).pt weights/best(trainedOnM6).pt
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ✅ Set up Streamlit config in the correct path
-RUN mkdir -p /app/.streamlit && \
-    echo "\
+# ✅ Create streamlit config directory inside /app
+RUN mkdir -p /app/.streamlit
+
+# ✅ Set config so it doesn't default to root
+ENV STREAMLIT_CONFIG_DIR=/app/.streamlit
+ENV STREAMLIT_HOME=/app/.streamlit
+ENV STREAMLIT_BROWSER_GATHERUSAGESTATS=false
+
+# ✅ Add Streamlit config file
+RUN echo "\
 [server]\n\
 headless = true\n\
-port = 8501\n\
 enableCORS = false\n\
+port = 8501\n\
 " > /app/.streamlit/config.toml
 
 EXPOSE 8501
