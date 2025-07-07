@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yolov8-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yolov8
+  template:
+    metadata:
+      labels:
+        app: yolov8
+    spec:
+      containers:
+        - name: yolov8-container
+          image: yolov8-streamlit:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8501
+
