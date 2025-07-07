@@ -12,12 +12,21 @@ COPY helper.py helper.py
 COPY settings.py settings.py
 COPY weights/best(trainedOnM6).pt weights/best(trainedOnM6).pt
 
+# ✅ Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 8501
+# ✅ Create .streamlit config directory inside /app
+RUN mkdir -p /app/.streamlit
 
-ENV STREAMLIT_HOME=/app/.streamlit
-RUN mkdir -p $STREAMLIT_HOME
-ENV STREAMLIT_CONFIG_DIR=$STREAMLIT_HOME
+# ✅ Add a basic config file so Streamlit doesn’t crash
+RUN echo "\
+[server]\n\
+headless = true\n\
+port = 8501\n\
+enableCORS = false\n\
+\n\
+" > /app/.streamlit/config.toml
+
+EXPOSE 8501
 
 CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
